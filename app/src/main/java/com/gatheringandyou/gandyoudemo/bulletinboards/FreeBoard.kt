@@ -8,7 +8,7 @@ import com.gatheringandyou.gandyoudemo.R
 import com.gatheringandyou.gandyoudemo.adapters.BoardAdapter
 import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
 
-//테스트
+//테스트1
 
 
 class FreeBoard : AppCompatActivity() {
