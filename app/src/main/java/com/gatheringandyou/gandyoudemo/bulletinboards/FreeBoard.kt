@@ -14,6 +14,8 @@ import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
 
 //테스트 머지 테스트!!
 
+//코드 추가욧~~~~!!!!
+
 
 class FreeBoard : AppCompatActivity() {
 
