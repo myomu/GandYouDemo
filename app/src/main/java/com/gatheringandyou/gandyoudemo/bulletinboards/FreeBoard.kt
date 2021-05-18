@@ -34,7 +34,7 @@ class FreeBoard : AppCompatActivity() {
         val data: MutableList<Memo> = mutableListOf()
 
         for (no in 1..100){
-            val title = "이것이 안드로이드다 ${no}"
+            val title = "이것이 안드로이드다!! ${no}"
             val substance = "내용 ${no}"
             val date = System.currentTimeMillis()
             val username = "유저이름 ${no}"
