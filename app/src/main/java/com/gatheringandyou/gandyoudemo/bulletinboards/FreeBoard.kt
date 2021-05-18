@@ -9,7 +9,7 @@ import com.gatheringandyou.gandyoudemo.adapters.BoardAdapter
 import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
 
 //테스트1
-
+//테스트2
 
 class FreeBoard : AppCompatActivity() {
 
