@@ -10,6 +10,8 @@ import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
 
 //테스트1
 
+//테스트 브런치 지원
+
 
 class FreeBoard : AppCompatActivity() {
 
