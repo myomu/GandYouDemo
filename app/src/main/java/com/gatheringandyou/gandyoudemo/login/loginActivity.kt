@@ -47,13 +47,13 @@ class loginActivity : AppCompatActivity() {
                 {
                     if(response.body()!!.code == 200){
                         Toast.makeText(this@loginActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-
+                        goToMain()
                     }else{
                         Toast.makeText(this@loginActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
                     }
                 }
-                goToMain()
+                // goToMain() // 틀려도 넘어가서 위쪽으로 수정
             }
 
             override fun onFailure(call: Call<loginResponse>, t: Throwable) {

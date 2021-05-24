@@ -10,6 +10,7 @@ import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
 
 //테스트1
 //테스트2
+//테스트3
 
 class FreeBoard : AppCompatActivity() {
 
