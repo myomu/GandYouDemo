@@ -12,4 +12,9 @@ interface FreeBoardInterface {
         //@Body data: FreeBoardData
     ): Call<FreeBoardResponse>
 
+    @POST("/community/sendPost")
+    fun sendPostData(
+        @Body data: PostData
+    ): Call<PostResponse>
+
 }
