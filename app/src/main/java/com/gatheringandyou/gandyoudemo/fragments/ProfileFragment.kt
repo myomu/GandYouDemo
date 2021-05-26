@@ -1,12 +1,18 @@
 package com.gatheringandyou.gandyoudemo.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.gatheringandyou.gandyoudemo.MainActivity
+import com.gatheringandyou.gandyoudemo.bulletinboards.PostCreateActivity
 import com.gatheringandyou.gandyoudemo.databinding.FragmentProfileBinding
+import com.gatheringandyou.gandyoudemo.dialog.ProfileDialog
+import com.gatheringandyou.gandyoudemo.profile.ProfileEditActivity
 import com.gatheringandyou.gandyoudemo.shared.PreferenceManger
 
 
@@ -48,10 +54,46 @@ class ProfileFragment : Fragment() {
 
         }
 
+        binding.btnProfileEdit.setOnClickListener {
+            //val dialog = ProfileDialog(context)
+            //dialog.editProfile()
+            //onProfileEditDialogBtnClicked(it)
+            val intent = Intent(activity, ProfileEditActivity::class.java)
+            startActivity(intent)
+
+        }
+
+
         return mBinding?.root
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_home, container, false)
     }
+
+
+
+//    override fun onClick(v: View) {
+//        when (v.id) {
+//            //button.id
+//        }
+//    }
+
+
+    fun refreshFragment() {
+
+
+
+        //mainActivity.supportFragmentManager.beginTransaction().detach(ProfileFragment()).attach(ProfileFragment()).commit()
+        if( !isAdded) return
+        val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+        ft.detach(this).attach(this).commit()
+    }
+
+    fun onProfileEditDialogBtnClicked(view: View) {
+        val context = requireContext()
+        val myDialog = ProfileDialog(context)
+        myDialog.show()
+    }
+
 
     override fun onDestroy() {
         mBinding = null

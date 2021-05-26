@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GandYouDemo"
         android:usesCleartextTraffic="true">
+        <activity android:name=".profile.ProfileEditActivity"></activity>
         <activity android:name=".bulletinboards.PostCreateActivity" />
         <activity android:name=".bulletinboards.ExtensionActivity" />
         <activity android:name=".bulletinboards.FreeBoard" />
