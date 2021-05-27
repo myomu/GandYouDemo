@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/teal_200">
+
+            <ImageView
+                app:srcCompat="@drawable/ic_launcher_foreground"
+                android:id="@+id/image"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/nicknameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="@id/image"
+                app:layout_constraintTop_toBottomOf="@id/image" />
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/ageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="age"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="@id/image"
+                app:layout_constraintTop_toBottomOf="@id/nicknameTextView" />
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/hobby1TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hobby1"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="@id/ageTextView"
+                app:layout_constraintTop_toBottomOf="@id/ageTextView" />
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/hobby2TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hobby2"
+                android:textSize="30sp"
+                app:layout_constraintStart_toEndOf="@id/hobby1TextView"
+                app:layout_constraintBottom_toBottomOf="@id/hobby1TextView"
+                />
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:id="@+id/hobby3TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hobby3"
+                android:textSize="30sp"
+                app:layout_constraintStart_toEndOf="@id/hobby2TextView"
+                app:layout_constraintBottom_toBottomOf="@id/hobby2TextView"/>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="좋아요"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="미안해요"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toEndOf="@id/btn1"
+        app:layout_constraintTop_toTopOf="@id/btn1" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@
         <activity android:name=".bulletinboards.FreeBoard"/>
         <activity android:name=".signup.SignupActivity"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".matching.MatchingActivity"/>
         <activity android:name=".login.loginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
