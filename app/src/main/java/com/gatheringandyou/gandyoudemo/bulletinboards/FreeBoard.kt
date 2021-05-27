@@ -8,13 +8,7 @@ import com.gatheringandyou.gandyoudemo.R
 import com.gatheringandyou.gandyoudemo.adapters.BoardAdapter
 import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
 
-//테스트1
-
-//테스트 브런치 지원
-
-//테스트 머지 테스트!!
-
-//코드 추가욧~~~~!!!!
+//이 부분 삭제하고 머지 테스트 진행.
 
 
 class FreeBoard : AppCompatActivity() {
