@@ -1,5 +1,6 @@
 package com.gatheringandyou.gandyoudemo.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import com.gatheringandyou.gandyoudemo.MainActivity
 import com.gatheringandyou.gandyoudemo.R
 import com.gatheringandyou.gandyoudemo.bulletinboards.FreeBoard
 import com.gatheringandyou.gandyoudemo.databinding.ActivityLoginBinding
+import com.gatheringandyou.gandyoudemo.shared.PreferenceManger
 import com.gatheringandyou.gandyoudemo.signup.SignupActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,6 +20,8 @@ import retrofit2.Response
 class loginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
     lateinit var loginapi:Logininterface
+    val context : Context = this
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -26,6 +30,19 @@ class loginActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener { goResister() }
 
         setContentView(binding.root)
+
+        val checkLoginEmail = PreferenceManger(context).getString("userEmail")
+
+        Log.d("체크 Pref", checkLoginEmail.toString())
+
+        if (checkLoginEmail != "Default") {
+
+            goToMain()
+
+        } else {
+            return
+        }
+
     }
 
     private fun dologin() {
@@ -46,8 +63,15 @@ class loginActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null)
                 {
                     if(response.body()!!.code == 200){
+
+                        //SharedPreferences 사용 사용자 email 을 저장
+                        PreferenceManger(context).setString("userEmail", email)
+
                         Toast.makeText(this@loginActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        val checkEmail = PreferenceManger(context).getString("userEmail")
+                        Log.d("이메일저장 확인", checkEmail.toString())
                         goToMain()
+
                     }else{
                         Toast.makeText(this@loginActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 

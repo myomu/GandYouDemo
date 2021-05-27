@@ -1,19 +1,29 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gatheringandyou.gandyoudemo.Memo
 import com.gatheringandyou.gandyoudemo.R
 import com.gatheringandyou.gandyoudemo.adapters.BoardAdapter
 import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
-
-//이 부분 삭제하고 머지 테스트 진행.
+import com.gatheringandyou.gandyoudemo.login.repository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 
 class FreeBoard : AppCompatActivity() {
 
     private val binding by lazy { ActivityFreeBoardBinding.inflate(layoutInflater) }
+    //lateinit var freeboardapi: FreeBoardInterface
+    private lateinit var boardAdapter: BoardAdapter
+    lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,27 +31,51 @@ class FreeBoard : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val data:MutableList<Memo> = loadData()
+        context = this
 
-        var adapter = BoardAdapter()
-        adapter.listData = data
-        binding.freeBoardRecyclerView.adapter = adapter
+        //기본 액션바 숨김처리
+        //var actionBar : ActionBar? = supportActionBar
+        //actionBar?.hide()
 
+        DataCommunication.loadFreeboardData(this)
+
+        boardAdapter = BoardAdapter()
+
+        binding.freeBoardRecyclerView.adapter = boardAdapter
         binding.freeBoardRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        binding.btnPostCreate.setOnClickListener {
+
+            val intent = Intent(this, PostCreateActivity::class.java)
+            startActivity(intent)
+
+        }
     }
 
-    fun loadData(): MutableList<Memo> {
-        val data: MutableList<Memo> = mutableListOf()
+    override fun onRestart() {
+        super.onRestart()
 
-        for (no in 1..100){
-            val title = "이것이 안드로이드다~~!! ${no}"
-            val substance = "내용 ${no}"
-            val date = System.currentTimeMillis()
-            val username = "유저이름 ${no}"
+        DataCommunication.loadFreeboardData(this)
 
-            var memo = Memo(title, substance, date, username, no)
-            data.add(memo)
-        }
-        return data
+    }
+
+
+
+//    override fun onBackPressed() {
+//        val postCreateFragment = PostCreateFragment()
+//
+//        val transaction = supportFragmentManager.beginTransaction()
+//        transaction.setCustomAnimations(R.anim.out_bottom, R.anim.enter_from_right)
+//            .remove(postCreateFragment)
+//            .commit()
+//    }
+
+
+
+    fun loadComplete(data: MutableList<FreeBoardData>) {
+        //boardAdapter.setList(data)
+        boardAdapter.listData = data
+        boardAdapter.notifyDataSetChanged()
+        Log.d("데이타확인", data.toString())
     }
 }

@@ -6,14 +6,9 @@ import retrofit2.http.POST
 
 interface Logininterface {
 
-
-
-
         @POST("/user/login")
         fun getLogin(
                 @Body data:Login
         ): Call<loginResponse>
-
-
 
     }
