@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gatheringandyou.gandyoudemo.R
 
 class UserAdapter(
-    private val userList :List<User>,val context : Context
+    private val userList :MutableList<User>,val context : Context
 ) : RecyclerView.Adapter<UserAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -31,7 +31,8 @@ class UserAdapter(
         }
         holder.btnDislike.setOnClickListener {
             //미안해요 기능
-            Toast.makeText(context,userList[position].nickname,Toast.LENGTH_SHORT).show()
+            userList.remove(userList[position])
+            notifyDataSetChanged()
         }
 
 
@@ -43,6 +44,7 @@ class UserAdapter(
 
         private val imageView : ImageView = itemView.findViewById(R.id.image)
         private val nameTextView : TextView = itemView.findViewById(R.id.nicknameTextView)
+        private val departTextView : TextView = itemView.findViewById(R.id.departTextView)
         private val ageTextView : TextView = itemView.findViewById(R.id.ageTextView)
         private val hobby1TextView : TextView = itemView.findViewById(R.id.hobby1TextView)
         private val hobby2TextView : TextView = itemView.findViewById(R.id.hobby2TextView)
@@ -52,6 +54,7 @@ class UserAdapter(
 
         fun bind(user : User){
             nameTextView.text = user.nickname
+            departTextView.text = user.depart
             ageTextView.text = user.age
             hobby1TextView.text = user.hobby1
             hobby2TextView.text = user.hobby2

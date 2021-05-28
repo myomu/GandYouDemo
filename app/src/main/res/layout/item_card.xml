@@ -41,6 +41,16 @@
                 app:layout_constraintTop_toBottomOf="@id/image" />
 
             <TextView
+                android:id="@+id/departTextView"
+                app:layout_constraintEnd_toEndOf="@id/image"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                android:layout_marginTop="15dp"
+                android:text=" 학과"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
                 android:layout_marginTop="15dp"
                 android:id="@+id/ageTextView"
                 android:layout_width="wrap_content"
