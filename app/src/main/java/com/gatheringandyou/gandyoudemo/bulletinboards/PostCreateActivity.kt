@@ -37,15 +37,10 @@ class PostCreateActivity : AppCompatActivity() {
         //freeBoardBinding.freeBoardView.adapter
 
         //기본 액션바 처리 부분
-        //val actionBar : ActionBar? = supportActionBar
-        //actionBar?.setDisplayShowTitleEnabled(false)
-
         setSupportActionBar(binding.toolbarPostCreate)
-
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbarPostCreate.title = "글작성"
-        //binding.toolbarPostCreate.
-        //binding.toolbarPostCreate.
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbarPostCreate.title = "글 쓰기"
 
 
     }

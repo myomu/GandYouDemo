@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,9 +34,11 @@ class FreeBoard : AppCompatActivity() {
 
         context = this
 
-        //기본 액션바 숨김처리
-        //var actionBar : ActionBar? = supportActionBar
-        //actionBar?.hide()
+        //기본 액션바 처리
+        setSupportActionBar(binding.tbFreeBoard)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.tbFreeBoard.title = "자유게시판"
 
         DataCommunication.loadFreeboardData(this)
 
@@ -57,6 +60,26 @@ class FreeBoard : AppCompatActivity() {
 
         DataCommunication.loadFreeboardData(this)
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId){
+            android.R.id.home -> {
+                someFunction()
+                return true
+            }
+
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+
+    }
+
+    private fun someFunction() {
+        finish()
+        overridePendingTransition(R.anim.none, R.anim.horizon_exit)
     }
 
 

@@ -1,8 +1,6 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
 
-import java.sql.Timestamp
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 data class FreeBoardData(

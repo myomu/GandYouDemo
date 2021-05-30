@@ -58,6 +58,8 @@ class MatchingActivity:AppCompatActivity() {
                         if(list[i].nickname != mynickname && list[i].department != depart){
                             val otherdata = User(list[i].nickname,list[i].department,list[i].age,list[i].hobby1,list[i].hobby2,list[i].hobby3)
                             userList.add(otherdata)
+                        } else {
+                            continue
                         }
                     }
                 binding.viewPager.adapter?.notifyDataSetChanged()}

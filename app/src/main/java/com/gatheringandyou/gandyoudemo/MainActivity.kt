@@ -7,11 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.gatheringandyou.gandyoudemo.bulletinboards.*
 import com.gatheringandyou.gandyoudemo.databinding.ActivityMainBinding
-import com.gatheringandyou.gandyoudemo.login.Login
-import com.gatheringandyou.gandyoudemo.login.Logininterface
-import com.gatheringandyou.gandyoudemo.login.loginResponse
 import com.gatheringandyou.gandyoudemo.login.repository
 import com.gatheringandyou.gandyoudemo.shared.*
 import retrofit2.Call
@@ -49,8 +45,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun loadUserData(context: Context){
-
-
 
         val useremail = PreferenceManger(context).getString("userEmail")
         Log.d("유저 이메일 테스트", useremail.toString())

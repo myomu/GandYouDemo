@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -14,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "com.gatheringandyou.gandyoudemo"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -66,4 +67,7 @@ dependencies {
 
     // 서클 이미지 뷰
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // 파이어베이스 파이어스토어 추가
+    implementation 'com.google.firebase:firebase-firestore:23.0.0'
 }

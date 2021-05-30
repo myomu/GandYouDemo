@@ -2,6 +2,7 @@ package com.gatheringandyou.gandyoudemo.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +11,25 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.gatheringandyou.gandyoudemo.MainActivity
 import com.gatheringandyou.gandyoudemo.bulletinboards.PostCreateActivity
+import com.gatheringandyou.gandyoudemo.chatting.ChatLayoutData
 import com.gatheringandyou.gandyoudemo.databinding.FragmentProfileBinding
 import com.gatheringandyou.gandyoudemo.dialog.ProfileDialog
 import com.gatheringandyou.gandyoudemo.profile.ProfileEditActivity
 import com.gatheringandyou.gandyoudemo.shared.PreferenceManger
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ProfileFragment : Fragment() {
 
     private var mBinding : FragmentProfileBinding? = null
+
+    //val currentUserEmail = PreferenceManger(this).getString("userEmail")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +79,8 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_home, container, false)
     }
+
+
 
 
 

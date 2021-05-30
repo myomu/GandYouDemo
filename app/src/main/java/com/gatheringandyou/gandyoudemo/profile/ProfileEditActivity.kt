@@ -18,10 +18,14 @@ import com.gatheringandyou.gandyoudemo.bulletinboards.DataCommunication.postProf
 import com.gatheringandyou.gandyoudemo.databinding.ActivityProfileEditBinding
 import com.gatheringandyou.gandyoudemo.fragments.ProfileFragment
 import com.gatheringandyou.gandyoudemo.shared.PreferenceManger
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileEditActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityProfileEditBinding.inflate(layoutInflater) }
+
+    private val db = FirebaseFirestore.getInstance()    // Firestore 인스턴스
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,9 +144,15 @@ class ProfileEditActivity : AppCompatActivity() {
         //수정 버튼 이벤트 처리
         binding.btnProfileEditSet.setOnClickListener {
 
-            val nickname = binding.etProfileEditNickname.text.toString()
+            val currentEmail = PreferenceManger(applicationContext).getString("userEmail") // 현재 저장된 이메일
+            val currentNick = PreferenceManger(applicationContext).getString("userNickname") // 현재 저장된 닉네임
+
+            val nickname = binding.etProfileEditNickname.text.toString() // etText 의 수정할 닉네임
             val age: Int = Integer.parseInt(binding.etProfileEditAge.text.toString())
             val department = binding.etProfileEditDepartment.text.toString()
+
+
+            updateFirestoreNickname(currentEmail, currentNick, nickname)
 
 
             PreferenceManger(applicationContext).setString("userNickname", nickname)
@@ -193,6 +203,35 @@ class ProfileEditActivity : AppCompatActivity() {
     private fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
         val ft: FragmentTransaction = fragmentManager.beginTransaction()
         ft.detach(fragment).attach(fragment).commit()
+    }
+
+    private fun updateFirestoreNickname(currentUserEmail: String?, currentUserNickname: String?, editUserNickname: String) {
+
+        // 먼저 users 가 지니는 email key 로 접근. email 은 배열이다.
+        db.collection("Chatting")
+            .whereArrayContains("users.email", currentUserEmail!!) //여기 currentUser 로 쿼리 selection을 한다. 해당 유저의 이메일이 있는 대화창 전부 찾음.
+            .addSnapshotListener { snapshots, e ->
+                // 오류 발생 시
+                if (e != null) {
+                    Log.w("ChatFragment", "Listen failed: $e")
+                    return@addSnapshotListener
+                }
+
+                for (doc in snapshots!!.documents) {
+
+                    //val userNicknameArray = doc.data?.get("users") - 필요없음.. 아래에서 바로 닉네임 바꿈.
+                    val documentId = doc.id
+
+                    //Log.d("userNicknameArray 테스트", userNicknameArray.toString())
+                    Log.d("DocumentId 테스트", doc.id) // 문서 아이디 받아오는 것
+
+                    // 수정할 유저의 닉네임을 추가한다.
+                    db.collection("Chatting").document(documentId).update("users.nickname", FieldValue.arrayUnion(editUserNickname))
+                    // 현재 유저의 닉네임을 삭제한다.
+                    db.collection("Chatting").document(documentId).update("users.nickname", FieldValue.arrayRemove(currentUserNickname))
+
+                }
+            }
     }
 
 }

@@ -2,6 +2,7 @@ package com.gatheringandyou.gandyoudemo.bulletinboards
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import com.gatheringandyou.gandyoudemo.R
@@ -17,9 +18,10 @@ class ExtensionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //기본 액션바 처리 부분
-        val actionBar : ActionBar? = supportActionBar
-        actionBar?.title = ""
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        setSupportActionBar(binding.tbExtension)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.tbExtension.title = " "
 
         binding.tvExtensionUsername.text = intent.getStringExtra("userName")
         binding.tvExtensionDate.text = intent.getStringExtra("date")
@@ -36,6 +38,11 @@ class ExtensionActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.horizon_enter, R.anim.none)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.extension_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId){
@@ -43,6 +50,11 @@ class ExtensionActivity : AppCompatActivity() {
                 someFunction()
                 return true
             }
+            R.id.item_extension_menu -> {
+
+                return true
+            }
+
             else -> {
                 return super.onOptionsItemSelected(item)
             }

@@ -12,11 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GandYouDemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".bulletinboards.FreeBoard"/>
-        <activity android:name=".signup.SignupActivity"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".matching.MatchingActivity"/>
-
+        <activity android:name=".chatting.ChattingActivity" />
+        <activity android:name=".bulletinboards.FreeBoard" />
+        <activity android:name=".signup.SignupActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".matching.MatchingActivity" />
         <activity android:name=".profile.ProfileEditActivity" />
         <activity android:name=".bulletinboards.PostCreateActivity" />
         <activity android:name=".bulletinboards.ExtensionActivity" />
