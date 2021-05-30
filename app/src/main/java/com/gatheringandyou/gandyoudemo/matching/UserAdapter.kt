@@ -54,7 +54,7 @@ class UserAdapter(
 
         fun bind(user : User){
             nameTextView.text = user.nickname
-            departTextView.text = user.depart
+            departTextView.text = user.department
             ageTextView.text = user.age
             hobby1TextView.text = user.hobby1
             hobby2TextView.text = user.hobby2

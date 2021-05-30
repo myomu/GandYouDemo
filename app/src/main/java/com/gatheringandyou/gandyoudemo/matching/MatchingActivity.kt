@@ -45,20 +45,22 @@ class MatchingActivity:AppCompatActivity() {
     {
         matchapi = retrofit.create(MatchInterface::class.java)
     }
-        val call: Call<UserResponse> = matchapi.getMatchingUser(hobby1,hobby2,hobby3)
+        val hobby = Hobby(hobby1,hobby2,hobby3)
+        val call: Call<UserResponse> = matchapi.getMatchingUser(hobby)
 
 
         call.enqueue(object:Callback<UserResponse>{
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if(response.isSuccessful&&response.body()!=null) {
                 val list = response.body()!!.list
+
                     for (i in list.indices){
-                        if(list[i].nickname != mynickname && list[i].depart != depart){
-                            val otherdata = User(list[i].nickname,list[i].depart,list[i].age,list[i].hobby1,list[i].hobby2,list[i].hobby3)
+                        if(list[i].nickname != mynickname && list[i].department != depart){
+                            val otherdata = User(list[i].nickname,list[i].department,list[i].age,list[i].hobby1,list[i].hobby2,list[i].hobby3)
                             userList.add(otherdata)
                         }
                     }
-                }
+                binding.viewPager.adapter?.notifyDataSetChanged()}
 
                 }
 

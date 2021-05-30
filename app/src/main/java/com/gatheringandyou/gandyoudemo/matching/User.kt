@@ -4,7 +4,7 @@ data class User
     (
 
     val nickname: String,
-    val depart: String,
+    val department: String,
     val age: String,
     val hobby1: String,
     val hobby2: String,

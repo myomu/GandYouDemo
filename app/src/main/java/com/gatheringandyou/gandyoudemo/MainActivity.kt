@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                         PreferenceManger(context).setString("userDepartment", listData[0].department)
                         PreferenceManger(context).setInt("userAge", listData[0].age)
                         PreferenceManger(context).setString("userHobby1", listData[0].hobby1)
-                        PreferenceManger(context).setString("userHobby2", listData[0].hobby2)
+                       PreferenceManger(context).setString("userHobby2", listData[0].hobby2)
                         PreferenceManger(context).setString("userHobby3", listData[0].hobby3)
 
                     }else{
