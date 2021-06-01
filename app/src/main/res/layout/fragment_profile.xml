@@ -121,6 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="프로필 수정"
+        app:backgroundTint="#ffaaaa"
         app:layout_constraintBottom_toTopOf="@+id/btn_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -131,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
         android:text="로그아웃"
+        app:backgroundTint="#ff5555"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
