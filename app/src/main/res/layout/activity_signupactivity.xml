@@ -87,7 +87,7 @@
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
         android:text="중복확인"
-        app:backgroundTint="000000"
+        app:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="@id/et_nick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
