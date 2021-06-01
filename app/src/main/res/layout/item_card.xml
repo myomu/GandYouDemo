@@ -18,23 +18,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/teal_200">
+            android:background="#fbceb1">
 
             <ImageView
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:id="@+id/image"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_launcher_foreground" />
 
             <TextView
-                android:layout_marginTop="15dp"
                 android:id="@+id/nicknameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="닉네임"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="@id/image"
@@ -42,57 +42,55 @@
 
             <TextView
                 android:id="@+id/departTextView"
-                app:layout_constraintEnd_toEndOf="@id/image"
-                app:layout_constraintTop_toBottomOf="@id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text=" 학과"
                 android:textSize="30sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintEnd_toEndOf="@id/image"
+                app:layout_constraintTop_toBottomOf="@id/image" />
 
             <TextView
-                android:layout_marginTop="15dp"
                 android:id="@+id/ageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="age"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="@id/image"
                 app:layout_constraintTop_toBottomOf="@id/nicknameTextView" />
 
             <TextView
-                android:layout_marginTop="15dp"
                 android:id="@+id/hobby1TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="hobby1"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="@id/ageTextView"
                 app:layout_constraintTop_toBottomOf="@id/ageTextView" />
+
             <TextView
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
                 android:id="@+id/hobby2TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="hobby2"
-                android:textSize="30sp"
-                app:layout_constraintStart_toEndOf="@id/hobby1TextView"
-                app:layout_constraintBottom_toBottomOf="@id/hobby1TextView"
-                />
-            <TextView
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:text="hobby2"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="@id/hobby1TextView"
+                app:layout_constraintStart_toEndOf="@id/hobby1TextView" />
+
+            <TextView
                 android:id="@+id/hobby3TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:text="hobby3"
                 android:textSize="30sp"
-                app:layout_constraintStart_toEndOf="@id/hobby2TextView"
-                app:layout_constraintBottom_toBottomOf="@id/hobby2TextView"/>
-
-
-
+                app:layout_constraintBottom_toBottomOf="@id/hobby2TextView"
+                app:layout_constraintStart_toEndOf="@id/hobby2TextView" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -105,6 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="좋아요"
+        app:backgroundTint="#dc143c"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn2"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,8 +114,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="미안해요"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="#115a58"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn1"
         app:layout_constraintTop_toTopOf="@id/btn1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
         android:layout_marginTop="44dp"
         android:layout_marginBottom="668dp"
         android:text="오늘의 상대는"
-        android:textColor="#EF6E6E"
+        android:textColor="#115a58"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,6 +29,7 @@
         android:id="@+id/btn_match"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#EF6E6E"
 
         android:text="매칭하기"
         android:textColor="#FFFFFF"

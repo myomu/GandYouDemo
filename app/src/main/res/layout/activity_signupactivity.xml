@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".signup.SignupActivity">
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="200dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_pass"
@@ -26,8 +15,10 @@
         android:hint="Password"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/et_email"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/et_email"
         app:layout_constraintTop_toBottomOf="@+id/et_email" />
+
     <EditText
         android:id="@+id/et_nick"
         android:layout_width="200dp"
@@ -37,16 +28,32 @@
         android:hint="닉네임"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/et_pass"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/et_pass"
         app:layout_constraintTop_toBottomOf="@+id/et_pass" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="4dp"
+        android:text="회원가입"
+        app:backgroundTint="#115a58"
+        app:layout_constraintEnd_toEndOf="@+id/radiogroup"
+        app:layout_constraintHorizontal_bias="0.528"
+        app:layout_constraintStart_toStartOf="@+id/radiogroup"
+        app:layout_constraintTop_toBottomOf="@+id/radiogroup" />
+
     <RadioGroup
         android:id="@+id/radiogroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@id/et_nick"
         app:layout_constraintStart_toStartOf="@id/et_nick"
         app:layout_constraintTop_toBottomOf="@id/et_nick">
+
         <RadioButton
             android:id="@+id/radio1"
             android:layout_width="wrap_content"
@@ -61,24 +68,30 @@
 
     </RadioGroup>
 
-
-    <Button
-        android:id="@+id/btn_register"
+    <EditText
+        android:id="@+id/et_email"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:text="회원가입"
-        app:layout_constraintEnd_toEndOf="@+id/radiogroup"
-        app:layout_constraintStart_toStartOf="@+id/radiogroup"
-        app:layout_constraintTop_toBottomOf="@+id/radiogroup" />
+        android:layout_marginTop="196dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/checknick"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginBottom="8dp"
         android:text="중복확인"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="000000"
         app:layout_constraintBottom_toBottomOf="@id/et_nick"
-        app:layout_constraintStart_toEndOf="@id/et_nick"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toEndOf="@id/et_nick" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
