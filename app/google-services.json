@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "840556881290",
+    "project_id": "gandyouchattingservice",
+    "storage_bucket": "gandyouchattingservice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840556881290:android:5d239b7d67fa08f9445473",
+        "android_client_info": {
+          "package_name": "com.example.chattingexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "840556881290-05j73nbvq9kv5ei0glfheuf16f3no6kl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPPjIEW2HKP2l4WVI8V4a8bN-a7v7X1Go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840556881290-05j73nbvq9kv5ei0glfheuf16f3no6kl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840556881290:android:445eb6eb327cbcb3445473",
+        "android_client_info": {
+          "package_name": "com.gatheringandyou.gandyoudemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "840556881290-05j73nbvq9kv5ei0glfheuf16f3no6kl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPPjIEW2HKP2l4WVI8V4a8bN-a7v7X1Go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840556881290-05j73nbvq9kv5ei0glfheuf16f3no6kl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

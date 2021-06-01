@@ -3,6 +3,7 @@ package com.gatheringandyou.gandyoudemo.shared
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.gatheringandyou.gandyoudemo.bulletinboards.ExtensionActivity
 import com.gatheringandyou.gandyoudemo.login.loginResponse
 import retrofit2.Callback
 

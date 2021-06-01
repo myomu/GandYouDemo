@@ -16,12 +16,14 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:maxLines="1"
             android:text="제목" />
 
         <TextView
             android:id="@+id/board_recycler_item_substance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="내용" />
 
         <LinearLayout

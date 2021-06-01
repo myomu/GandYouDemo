@@ -1,5 +1,6 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.gatheringandyou.gandyoudemo.login.repository
@@ -11,11 +12,14 @@ import com.gatheringandyou.gandyoudemo.shared.UserDataInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 object DataCommunication {
 
     lateinit var freeboardapi: FreeBoardInterface
     lateinit var profileEditAPI: UserDataInterface
+    lateinit var dataApi: InterfaceCollection // 댓글 DB 통신. 댓글 가져오는 것
 
     fun loadFreeboardData(mCallback: FreeBoard){
 
@@ -90,6 +94,82 @@ object DataCommunication {
             }
 
         })
+    }
+
+    fun loadCommentsData(mCallback: ExtensionActivity, freeBoardId: Int){
+
+        val freeId = DataCollection.PostFreeBoardId(freeBoardId)
+        //var listData: MutableList<DataCollection.GetCommentsData>
+
+        val retrofit = repository.getApiClient()
+        if (retrofit != null) {
+            dataApi = retrofit.create(InterfaceCollection::class.java)
+        }
+
+        val call: Call<DataCollection.GetCommentsResponse> = dataApi.getCommentsData(freeId)
+        call.enqueue(object: Callback<DataCollection.GetCommentsResponse> {
+
+            override fun onResponse(call: Call<DataCollection.GetCommentsResponse>, response: Response<DataCollection.GetCommentsResponse>) {
+                if (response.isSuccessful && response.body() != null)
+                {
+
+                    if(response.body()!!.code == 200){
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        Log.d("성공 메세지", response.body()!!.message)
+//                        Log.d("사용자 데이터 받아와지나?", response.body()!!.data.toString())
+
+                        //데이터 불러와서 넘겨줌. 넘겨진 데이터는 리사이클러뷰 어댑터에 장착됨.
+                        mCallback.loadCommentsComplete(response.body()!!.data)
+
+                    }else{
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DataCollection.GetCommentsResponse>, t: Throwable) {
+                t.message?.let { Log.e("onFailure", it) }
+            }
+        })
+    }
+
+    fun postCommentsData(mCallback: ExtensionActivity, comments: String, freeBoardId: Int) {
+        val userId = PreferenceManger(mCallback).getInt("userId")
+        val userEmail = PreferenceManger(mCallback).getString("userEmail").toString()
+        val userNickname = PreferenceManger(mCallback).getString("userNickname").toString()
+
+        val nowTime = Calendar.getInstance().time // 현재 시간
+        val commentsDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(nowTime)
+
+        val commentsData = DataCollection.SendCommentsData(userId, userEmail, userNickname, comments, commentsDate, freeBoardId)
+        //var listData: MutableList<DataCollection.GetCommentsData>
+
+        val retrofit = repository.getApiClient()
+        if (retrofit != null) {
+            dataApi = retrofit.create(InterfaceCollection::class.java)
+        }
+
+        val call: Call<DataCollection.SendCommentsResponse> = dataApi.sendCommentsData(commentsData)
+        call.enqueue(object: Callback<DataCollection.SendCommentsResponse> {
+
+            override fun onResponse(call: Call<DataCollection.SendCommentsResponse>, response: Response<DataCollection.SendCommentsResponse>) {
+                if (response.isSuccessful && response.body() != null)
+                {
+                    if(response.body()!!.code == 200){
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+
+
+                    }else{
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DataCollection.SendCommentsResponse>, t: Throwable) {
+                t.message?.let { Log.e("onFailure", it) }
+            }
+        })
+
     }
 
 }

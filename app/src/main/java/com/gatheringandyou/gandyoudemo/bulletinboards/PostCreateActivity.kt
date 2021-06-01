@@ -61,7 +61,7 @@ class PostCreateActivity : AppCompatActivity() {
 
                 sendPostData()
 
-                var intent = Intent()
+                val intent = Intent()
                 intent.putExtra("result", 1)
                 setResult(RESULT_OK, intent)
 
@@ -104,6 +104,7 @@ class PostCreateActivity : AppCompatActivity() {
         val content = binding.etContent.text.toString()
         val userid = PreferenceManger(this).getInt("userId")
         val username = PreferenceManger(this).getString("userNickname").toString()
+        val useremail = PreferenceManger(this).getString("userEmail").toString()
         val nowTime = Calendar.getInstance().time // 현재 시간
 
         val changeTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(nowTime)
@@ -115,7 +116,7 @@ class PostCreateActivity : AppCompatActivity() {
             Toast.makeText(this, "제목과 내용을 입력해 주세요", Toast.LENGTH_SHORT).show()
             return
         }
-        val postData = PostData(title, content, userid, username, changeTime)
+        val postData = PostData(title, content, userid, username, useremail, changeTime)
         val retrofit = repository.getApiClient()
         if (retrofit != null) {
             freeboardapi = retrofit.create(FreeBoardInterface::class.java)
