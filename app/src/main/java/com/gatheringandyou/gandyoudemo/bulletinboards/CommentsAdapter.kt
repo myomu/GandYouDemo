@@ -1,10 +1,13 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +38,8 @@ class CommentsAdapter(context: Context): RecyclerView.Adapter<CommentsHolder>() 
 
         // loadCommentsComplete 함수에서 넘겨받은 data 를 CommentsHolder 클래스의 함수 setCommentsData 에 넘겨준다.
         holder.setCommentsData(comments)
-        holder.deleteComments(comments)
+        //holder.deleteComments(comments)
+        holder.checkDelete(comments)
 
     }
 
@@ -54,6 +58,15 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
 
         binding.itemCommentsNickname.text = data.user_nickname
         binding.itemCommentsContent.text = data.comments_content
+
+        // 아이템의 이메일과 현재 사용자의 이메일을 비교하여 작성된 댓글이 본인 것이라면 댓글 삭제 아이콘이 뜨도록 함.
+        val currentUserEmail = PreferenceManger(context).getString("userEmail")
+        if (currentUserEmail != data.user_email) {
+            binding.btnCommentsDelete.visibility = View.GONE
+        } else {
+            binding.btnCommentsDelete.visibility = View.VISIBLE
+        }
+
         // 댓글 삭제 처리
         // binding.btnCommentsDelete
 
@@ -85,9 +98,33 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
 
     }
 
+    fun checkDelete(data: DataCollection.GetCommentsData){
+        binding.btnCommentsDelete.setOnClickListener {
+            val dialog = AlertDialog.Builder(binding.root.context)
+            dialog.setTitle("댓글을 삭제하시겠습니까?")
+            dialog.setIcon(R.drawable.ic_round_delete)
+
+            val dialogListener = object : DialogInterface.OnClickListener{
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            deleteComments(data)
+                            //DataCommunication.popupLoading() // 댓글 삭제후 로딩.
+                        }
+                    }
+                }
+            }
+
+            dialog.setPositiveButton("네", dialogListener)
+            dialog.setNegativeButton("아니오", null)
+            dialog.show()
+
+        }
+    }
+
     fun deleteComments(data: DataCollection.GetCommentsData) {
 
-        binding.btnCommentsDelete.setOnClickListener {
+        //binding.btnCommentsDelete.setOnClickListener {
 
             Log.d("클릭 확인", "~~")
 
@@ -132,6 +169,7 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
             val boardCommentsCount = PreferenceManger(binding.root.context).getInt("BoardCommentsCount")
             val boardUserName = PreferenceManger(binding.root.context).getString("BoardUserName")
 
+            // 댓글 삭제 후 다시 ExtensionActivity 새로고침 하도록.
             (binding.root.context as ExtensionActivity).finish()
             val intent = Intent(binding.root.context, ExtensionActivity::class.java)
 
@@ -139,17 +177,16 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
             intent.putExtra("title", boardTitle)
             intent.putExtra("content", boardContent)
             //시간만 약간 차이나게
-            intent.putExtra("date", boardDate)
+            //intent.putExtra("date", boardDate)
 
-            intent.putExtra("likeCount", boardLikeCount)
-            intent.putExtra("commentsCount", boardCommentsCount)
-            intent.putExtra("userName", boardUserName)
-
+            //intent.putExtra("likeCount", boardLikeCount)
+            //intent.putExtra("commentsCount", boardCommentsCount)
+            //intent.putExtra("userName", boardUserName)
 
             (binding.root.context as ExtensionActivity).startActivity(intent)
             (binding.root.context as ExtensionActivity).overridePendingTransition(R.anim.none, R.anim.none)
 
-        }
+        //}
     }
 
 

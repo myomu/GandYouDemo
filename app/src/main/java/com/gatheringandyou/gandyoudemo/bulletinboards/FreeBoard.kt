@@ -1,22 +1,20 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gatheringandyou.gandyoudemo.R
 import com.gatheringandyou.gandyoudemo.adapters.BoardAdapter
 import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
-import com.gatheringandyou.gandyoudemo.login.repository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
+import com.gatheringandyou.gandyoudemo.databinding.LoadingBinding
+import com.gatheringandyou.gandyoudemo.dialog.LoadingDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class FreeBoard : AppCompatActivity() {
@@ -27,6 +25,16 @@ class FreeBoard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        //setContentView(bindingLoading.root)
+
+    }
+
+    // 글 작성 후 새로고침을 위해 onResume()에 코드를 작성.
+    override fun onResume() {
+        super.onResume()
+
+        // 처음 화면 진입시 로딩창.
+        showLoadingDialog()
 
         //기본 액션바 처리
         setSupportActionBar(binding.tbFreeBoard)
@@ -52,12 +60,12 @@ class FreeBoard : AppCompatActivity() {
     }
 
     // 게시글 작성되면 데이터를 다시 받아와 새로고침 시켜준다.
-    override fun onRestart() {
-        super.onRestart()
-
-        DataCommunication.loadFreeboardData(this)
-
-    }
+//    override fun onRestart() {
+//        super.onRestart()
+//
+//        DataCommunication.loadFreeboardData(this)
+//
+//    }
 
     // 상단 액션바의 아이템 선택 액션.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -67,7 +75,6 @@ class FreeBoard : AppCompatActivity() {
                 someFunction()
                 return true
             }
-
             else -> {
                 return super.onOptionsItemSelected(item)
             }
@@ -82,17 +89,6 @@ class FreeBoard : AppCompatActivity() {
     }
 
 
-
-//    override fun onBackPressed() {
-//        val postCreateFragment = PostCreateFragment()
-//
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.setCustomAnimations(R.anim.out_bottom, R.anim.enter_from_right)
-//            .remove(postCreateFragment)
-//            .commit()
-//    }
-
-
     // 리사이클러뷰 어댑터에 데이터 setting 시켜주는 함수.
     fun loadComplete(data: MutableList<FreeBoardData>) {
         //boardAdapter.setList(data)
@@ -100,4 +96,14 @@ class FreeBoard : AppCompatActivity() {
         boardAdapter.notifyDataSetChanged()
         Log.d("데이타확인", data.toString())
     }
+
+    private fun showLoadingDialog() {
+        val dialog = LoadingDialog(this)
+        CoroutineScope(Main).launch {
+            dialog.show()
+            delay(800)
+            dialog.dismiss()
+        }
+    }
+
 }

@@ -11,5 +11,6 @@ data class FreeBoardData(
     val freeboard_like_count: Int,
     val freeboard_comments_count: Int,
     val userid: Int,
-    val username: String
+    val username: String,
+    val useremail: String
     )

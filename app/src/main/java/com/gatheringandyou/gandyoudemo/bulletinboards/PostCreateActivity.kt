@@ -22,8 +22,11 @@ class PostCreateActivity : AppCompatActivity() {
     private val binding by lazy { ActivityPostCreateBinding.inflate(layoutInflater) }
 
     lateinit var freeboardapi:FreeBoardInterface
+    lateinit var dataApi: InterfaceCollection
 
-    //private lateinit var test1 : FreeBoard
+    var checkItem: Int = 0 // 게시글 생성과 수정 버튼 구분을 위한 변수.
+    var freeBoardId: Int = 0
+    var date: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,12 @@ class PostCreateActivity : AppCompatActivity() {
         setContentView(binding.root)
         overridePendingTransition(R.anim.vertical_enter, R.anim.none)
 
+        binding.etTitle.setText(intent.getStringExtra("title"))
+        binding.etContent.setText(intent.getStringExtra("content"))
 
+
+        checkItem = intent.getIntExtra("checkEdit", 0)
+        freeBoardId = intent.getIntExtra("id", 0)
         //boardAdapter = BoardAdapter()
 
         //freeBoardBinding.freeBoardView.adapter
@@ -47,7 +55,19 @@ class PostCreateActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.create_post_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+
+        val item1 = menu?.findItem(R.id.action_add)
+        val item2 = menu?.findItem(R.id.action_edit)
+
+        if (checkItem == 1) {
+            item1?.isVisible = false
+            item2?.isVisible = true
+        } else {
+            item1?.isVisible = true
+            item2?.isVisible = false
+        }
+
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -65,20 +85,15 @@ class PostCreateActivity : AppCompatActivity() {
                 intent.putExtra("result", 1)
                 setResult(RESULT_OK, intent)
 
-                someFunction()
+                return true
+            }
+            R.id.action_edit -> {
 
-
-
-                //val dd : FreeBoard = context
-                //dd.refresh()
-
-                //DataCommunication.loadFreeboardData(context)
-                //boardAdapter.notifyDataSetChanged()
-
-                //val cc = FreeBoard
+                editBulletin()
 
                 return true
             }
+
             else -> {
                 return super.onOptionsItemSelected(item)
             }
@@ -131,17 +146,60 @@ class PostCreateActivity : AppCompatActivity() {
                         //val cc = FreeBoard()
                         //cc.onResume
                         //FreeBoard().onResume()
+                        someFunction()
 
 
                     }else{
                         Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-
                     }
                 }
-
             }
 
             override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                t.message?.let { Log.e("onFailure", it) }
+            }
+
+        })
+    }
+
+    private fun editBulletin() {
+        val title = binding.etTitle.text.toString()
+        val content = binding.etContent.text.toString()
+        val username = PreferenceManger(this).getString("userNickname").toString()
+
+        if (title.isEmpty() || content.isEmpty()) {
+            Toast.makeText(this, "제목과 내용을 입력해 주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val postEditData = DataCollection.UpdateBulletin(freeBoardId, title, content, username)
+        val retrofit = repository.getApiClient()
+        if (retrofit != null) {
+            dataApi = retrofit.create(InterfaceCollection::class.java)
+        }
+        val call: Call<DataCollection.UpdateBulletinResponse> = dataApi.updateBulletin(postEditData)
+        call.enqueue(object: Callback<DataCollection.UpdateBulletinResponse> {
+            override fun onResponse(call: Call<DataCollection.UpdateBulletinResponse>, response: Response<DataCollection.UpdateBulletinResponse>) {
+                if (response.isSuccessful && response.body() != null)
+                {
+                    if(response.body()!!.code == 200){
+                        Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+
+                        someFunction()
+                        //val intent = Intent(this@PostCreateActivity, ExtensionActivity::class.java)
+                        //intent.putExtra("title", title)
+                        //intent.putExtra("content", content)
+                        //intent.putExtra("userName", username)
+                        //intent.putExtra("id", freeBoardId)
+                        //startActivity(intent)
+                        //finish()
+
+                    }else{
+                        Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DataCollection.UpdateBulletinResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
             }
 

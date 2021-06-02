@@ -20,6 +20,21 @@ class DataCollection {
         val message: String
     )
 
+    data class DeleteBulletinResponse(
+        val code: Int,
+        val message: String
+    )
+
+    data class UpdateBulletinResponse(
+        val code: Int,
+        val message: String
+    )
+
+    data class ReportResponse(
+        val code: Int,
+        val message: String
+    )
+
     data class GetCommentsData(
         val id_comments: Int,
         val user_id: Int,
@@ -46,4 +61,22 @@ class DataCollection {
     data class DeleteCommentsData(
         val id_comments: Int
     )
+
+    data class DeleteBulletin(
+        val id_freeboard: Int
+    )
+
+    data class UpdateBulletin(
+        val id_freeboard: Int,
+        val freeboard_title: String,
+        val freeboard_content: String,
+        val username: String
+    )
+
+    data class SendReportData(
+        val report_content: String,
+        val bulletin_id: Int,
+        val reporter_email: String
+    )
+
 }

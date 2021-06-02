@@ -4,8 +4,26 @@
 
     <item
         android:id="@+id/item_extension_menu"
-        android:icon="@drawable/ic_round_menu"
+        android:icon="@drawable/ic_round_more_vert"
         android:title="메뉴"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" >
+        <menu>
+            <item
+                android:id="@+id/item_report"
+                android:title="신고" />
+
+            <group
+                android:id="@+id/extension_menu_group"
+                android:visible="false">
+                <item
+                    android:id="@+id/item_edit"
+                    android:title="수정" />
+                <item
+                    android:id="@+id/item_delete"
+                    android:title="삭제" />
+            </group>
+
+        </menu>
+    </item>
 
 </menu>

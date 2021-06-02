@@ -1,8 +1,14 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
+import com.gatheringandyou.gandyoudemo.R
+import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
+import com.gatheringandyou.gandyoudemo.databinding.LoadingBinding
 import com.gatheringandyou.gandyoudemo.login.repository
 import com.gatheringandyou.gandyoudemo.profile.EditProfileResponse
 import com.gatheringandyou.gandyoudemo.profile.ProfileEditActivity
@@ -20,6 +26,7 @@ object DataCommunication {
     lateinit var freeboardapi: FreeBoardInterface
     lateinit var profileEditAPI: UserDataInterface
     lateinit var dataApi: InterfaceCollection // 댓글 DB 통신. 댓글 가져오는 것
+    val cc = this
 
     fun loadFreeboardData(mCallback: FreeBoard){
 
@@ -35,10 +42,8 @@ object DataCommunication {
             override fun onResponse(call: Call<FreeBoardResponse>, response: Response<FreeBoardResponse>) {
                 if (response.isSuccessful && response.body() != null)
                 {
-
                     if(response.body()!!.code == 200){
-                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
-
+                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         //서버에서 받아온 데이터를 loadComplete함수에 MutableList<FreeBoardData> 형식으로 넘긴다.
                         //이 방식은 retrofit이 enqueue로 비동기 방식(백그라운드에서 함수가 돌아감) 때문에 전역변수로 데이터 값을 저장할 수 없다.
                         //그래서 아래와 같이 따로 함수를 생성하고 그 함수가 데이터를 받아 BoardAdapter로 데이터를 넘겨준다.
@@ -81,8 +86,6 @@ object DataCommunication {
                     if(response.body()!!.code == 200){
                         Toast.makeText(activity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
-
-
                     }else{
                         Toast.makeText(activity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     }
@@ -99,7 +102,6 @@ object DataCommunication {
     fun loadCommentsData(mCallback: ExtensionActivity, freeBoardId: Int){
 
         val freeId = DataCollection.PostFreeBoardId(freeBoardId)
-        //var listData: MutableList<DataCollection.GetCommentsData>
 
         val retrofit = repository.getApiClient()
         if (retrofit != null) {
@@ -114,7 +116,7 @@ object DataCommunication {
                 {
 
                     if(response.body()!!.code == 200){
-                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         Log.d("성공 메세지", response.body()!!.message)
 //                        Log.d("사용자 데이터 받아와지나?", response.body()!!.data.toString())
 
@@ -158,7 +160,6 @@ object DataCommunication {
                     if(response.body()!!.code == 200){
                         Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
-
                     }else{
                         Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     }
@@ -171,5 +172,80 @@ object DataCommunication {
         })
 
     }
+
+
+    fun deleteBulletin(mCallback: ExtensionActivity, freeBoardId: Int) {
+
+        val deleteBulletin = DataCollection.DeleteBulletin(freeBoardId)
+
+        val retrofit = repository.getApiClient()
+        if (retrofit != null) {
+            dataApi = retrofit.create(InterfaceCollection::class.java)
+        }
+
+        val call: Call<DataCollection.DeleteBulletinResponse> = dataApi.deleteBulletin(deleteBulletin)
+        call.enqueue(object: Callback<DataCollection.DeleteBulletinResponse> {
+
+            override fun onResponse(call: Call<DataCollection.DeleteBulletinResponse>, response: Response<DataCollection.DeleteBulletinResponse>) {
+                if (response.isSuccessful && response.body() != null)
+                {
+                    if(response.body()!!.code == 200){
+
+                        mCallback.finish()
+                        val intent = Intent(mCallback, FreeBoard::class.java)
+                        mCallback.startActivity(intent)
+
+                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        Log.d("에러", response.body()!!.message)
+
+                    }else{
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        Log.d("테스트 response 200아닌경우", "여기뜨나?")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DataCollection.DeleteBulletinResponse>, t: Throwable) {
+                t.message?.let { Log.e("onFailure", it) }
+            }
+        })
+
+    }
+
+    fun sendReportData(mCallback: ExtensionActivity, reportContent: String, bulletinId: Int){
+
+        val reporterEmail = PreferenceManger(mCallback).getString("userEmail").toString()
+
+        val retrofit = repository.getApiClient()
+        if (retrofit != null) {
+            dataApi = retrofit.create(InterfaceCollection::class.java)
+        }
+
+        val sendReport = DataCollection.SendReportData(reportContent, bulletinId, reporterEmail)
+
+        val call: Call<DataCollection.ReportResponse> = dataApi.sendReportData(sendReport)
+        call.enqueue(object: Callback<DataCollection.ReportResponse> {
+
+            override fun onResponse(call: Call<DataCollection.ReportResponse>, response: Response<DataCollection.ReportResponse>) {
+                if (response.isSuccessful && response.body() != null)
+                {
+                    if(response.body()!!.code == 200){
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<DataCollection.ReportResponse>, t: Throwable) {
+                t.message?.let { Log.e("onFailure", it) }
+            }
+
+        })
+    }
+
+
+
+
+
 
 }
