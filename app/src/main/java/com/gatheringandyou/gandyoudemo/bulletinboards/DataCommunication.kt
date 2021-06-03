@@ -26,7 +26,6 @@ object DataCommunication {
     lateinit var freeboardapi: FreeBoardInterface
     lateinit var profileEditAPI: UserDataInterface
     lateinit var dataApi: InterfaceCollection // 댓글 DB 통신. 댓글 가져오는 것
-    val cc = this
 
     fun loadFreeboardData(mCallback: FreeBoard){
 
@@ -35,15 +34,13 @@ object DataCommunication {
             freeboardapi = retrofit.create(FreeBoardInterface::class.java)
         }
 
-
-        var call: Call<FreeBoardResponse> = freeboardapi.getFreeBoardData()
+        val call: Call<FreeBoardResponse> = freeboardapi.getFreeBoardData()
         call.enqueue(object: Callback<FreeBoardResponse> {
 
             override fun onResponse(call: Call<FreeBoardResponse>, response: Response<FreeBoardResponse>) {
                 if (response.isSuccessful && response.body() != null)
                 {
                     if(response.body()!!.code == 200){
-                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         //서버에서 받아온 데이터를 loadComplete함수에 MutableList<FreeBoardData> 형식으로 넘긴다.
                         //이 방식은 retrofit이 enqueue로 비동기 방식(백그라운드에서 함수가 돌아감) 때문에 전역변수로 데이터 값을 저장할 수 없다.
                         //그래서 아래와 같이 따로 함수를 생성하고 그 함수가 데이터를 받아 BoardAdapter로 데이터를 넘겨준다.
@@ -70,19 +67,13 @@ object DataCommunication {
         if (retrofit != null) {
             profileEditAPI = retrofit.create(UserDataInterface::class.java)
         }
-
         val userEmail = PreferenceManger(activity).getString("userEmail")
-
         val postData = PostProfileData(userEmail, nickname, department, age, hobby1, hobby2, hobby3)
-
-
         val call: Call<EditProfileResponse> = profileEditAPI.postProfileData(postData)
         call.enqueue(object: Callback<EditProfileResponse> {
-
             override fun onResponse(call: Call<EditProfileResponse>, response: Response<EditProfileResponse>) {
                 if (response.isSuccessful && response.body() != null)
                 {
-
                     if(response.body()!!.code == 200){
                         Toast.makeText(activity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
@@ -91,7 +82,6 @@ object DataCommunication {
                     }
                 }
             }
-
             override fun onFailure(call: Call<EditProfileResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
             }
@@ -102,24 +92,17 @@ object DataCommunication {
     fun loadCommentsData(mCallback: ExtensionActivity, freeBoardId: Int){
 
         val freeId = DataCollection.PostFreeBoardId(freeBoardId)
-
         val retrofit = repository.getApiClient()
         if (retrofit != null) {
             dataApi = retrofit.create(InterfaceCollection::class.java)
         }
-
         val call: Call<DataCollection.GetCommentsResponse> = dataApi.getCommentsData(freeId)
         call.enqueue(object: Callback<DataCollection.GetCommentsResponse> {
 
             override fun onResponse(call: Call<DataCollection.GetCommentsResponse>, response: Response<DataCollection.GetCommentsResponse>) {
                 if (response.isSuccessful && response.body() != null)
                 {
-
                     if(response.body()!!.code == 200){
-                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        Log.d("성공 메세지", response.body()!!.message)
-//                        Log.d("사용자 데이터 받아와지나?", response.body()!!.data.toString())
-
                         //데이터 불러와서 넘겨줌. 넘겨진 데이터는 리사이클러뷰 어댑터에 장착됨.
                         mCallback.loadCommentsComplete(response.body()!!.data)
 
@@ -139,13 +122,9 @@ object DataCommunication {
         val userId = PreferenceManger(mCallback).getInt("userId")
         val userEmail = PreferenceManger(mCallback).getString("userEmail").toString()
         val userNickname = PreferenceManger(mCallback).getString("userNickname").toString()
-
         val nowTime = Calendar.getInstance().time // 현재 시간
         val commentsDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(nowTime)
-
         val commentsData = DataCollection.SendCommentsData(userId, userEmail, userNickname, comments, commentsDate, freeBoardId)
-        //var listData: MutableList<DataCollection.GetCommentsData>
-
         val retrofit = repository.getApiClient()
         if (retrofit != null) {
             dataApi = retrofit.create(InterfaceCollection::class.java)
@@ -177,7 +156,6 @@ object DataCommunication {
     fun deleteBulletin(mCallback: ExtensionActivity, freeBoardId: Int) {
 
         val deleteBulletin = DataCollection.DeleteBulletin(freeBoardId)
-
         val retrofit = repository.getApiClient()
         if (retrofit != null) {
             dataApi = retrofit.create(InterfaceCollection::class.java)
@@ -195,12 +173,8 @@ object DataCommunication {
                         val intent = Intent(mCallback, FreeBoard::class.java)
                         mCallback.startActivity(intent)
 
-                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        Log.d("에러", response.body()!!.message)
-
                     }else{
                         Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        Log.d("테스트 response 200아닌경우", "여기뜨나?")
                     }
                 }
             }

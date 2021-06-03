@@ -38,7 +38,13 @@ class ExtensionActivity : AppCompatActivity() {
     val mCallBack = this
     lateinit var listData: MutableList<FreeBoardData>
     var freeBoardId: Int = 0
-    private val reportData = arrayOf("낚시/놀람/도배", "음란물/불건전한 만남 및 대화", "유출/사칭/사기", "상업적 광고 및 판매", "욕설/비하", "정당/정치인 비하 및 선거운동")
+    private val reportData = arrayOf(
+        "낚시/놀람/도배",
+        "음란물/불건전한 만남 및 대화",
+        "유출/사칭/사기",
+        "상업적 광고 및 판매",
+        "욕설/비하",
+        "정당/정치인 비하 및 선거운동")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +61,7 @@ class ExtensionActivity : AppCompatActivity() {
         showLoadingDialog()
 
         // 게시글의 id 값을 넘겨준다. 이 게시판 데이터의 primary_key
-        freeBoardId = PreferenceManger(this).getInt("BoardId")//intent.getIntExtra("id", 0)
-        Log.d("게시글 id 테스트", freeBoardId.toString())
+        freeBoardId = PreferenceManger(this).getInt("BoardId")
 
         // 게시판 데이터 받아옴
         loadFreeBoardData()
@@ -67,16 +72,6 @@ class ExtensionActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbExtension.title = " "
 
-
-
-        // 선택되어져 들어온 게시글 데이터를 intent 로 넘겨받아 setting 시켜준다.
-//        binding.tvExtensionUsername.text = intent.getStringExtra("userName")
-//        binding.tvExtensionDate.text = intent.getStringExtra("date")
-//        binding.tvExtensionTitle.text = intent.getStringExtra("title")
-//        binding.tvExtensionContent.text = intent.getStringExtra("content")
-//        binding.tvExtensionLikeCount.text = "${intent.getIntExtra("likeCount", 0)}"
-
-
         // 리사이클러뷰 관련 코드
         commentsAdapter = CommentsAdapter(this)
         binding.rvComments.adapter = commentsAdapter
@@ -86,11 +81,10 @@ class ExtensionActivity : AppCompatActivity() {
         DataCommunication.loadCommentsData(this, freeBoardId)
 
         // 테스트중..
-        binding.tvExtensionCommentsCount.text = commentsAdapter.itemCount.toString()//"${intent.getIntExtra("commentsCount", 0)}"
+        binding.tvExtensionCommentsCount.text = commentsAdapter.itemCount.toString()
 
         Log.d("리스트 사이즈 확인", commentsAdapter.itemCount.toString())
         // 테스트중..
-
 
         //binding.btnExtensionLike
 
@@ -99,44 +93,13 @@ class ExtensionActivity : AppCompatActivity() {
             binding.btnBoardChatSend.isEnabled = text.toString() != ""
         }
 
-        // 댓글 추가 intent로 새로고침.. 바꿈.
+        // 댓글 추가
         binding.btnBoardChatSend.setOnClickListener {
             postCommentsData(this, binding.etBoardChatting.text.toString(), freeBoardId)
             binding.etBoardChatting.text.clear()
-
-            /*val boardId = PreferenceManger(this).getInt("BoardId")
-            val boardTitle = PreferenceManger(this).getString("BoardTitle")
-            val boardContent = PreferenceManger(this).getString("BoardContent")
-            val boardDate = PreferenceManger(this).getString("BoardDate")
-            val boardLikeCount = PreferenceManger(this).getInt("BoardLikeCount")
-            val boardCommentsCount = PreferenceManger(this).getInt("BoardCommentsCount")
-            val boardUserName = PreferenceManger(this).getString("BoardUserName")
-            val boardUserEmail = PreferenceManger(this).getString("BoardUserEmail")
-            finish()
-
-            val intent = Intent(this, ExtensionActivity::class.java)
-
-            intent.putExtra("id", boardId)
-            intent.putExtra("title", boardTitle)
-            intent.putExtra("content", boardContent)
-            //시간만 약간 차이나게
-            intent.putExtra("date", boardDate)
-
-            intent.putExtra("likeCount", boardLikeCount)
-            intent.putExtra("commentsCount", boardCommentsCount)
-            intent.putExtra("userName", boardUserName)
-            intent.putExtra("userEmail", boardUserEmail) */
-
-
             finish()
             startActivity(intent)
             overridePendingTransition(R.anim.none, R.anim.none)
-
-            // 리스트를 한번 클리어시키고 갱신. 그다음 다시 데이터를 서버에 요청. 한번식 제대로 새로고침 안되는데 그 이유를 모르겠음..
-            //commentsAdapter.commentsListData.clear()
-            //commentsAdapter.notifyDataSetChanged()
-
-            //DataCommunication.loadCommentsData(this, freeBoardId)
         }
 
     }
@@ -146,7 +109,7 @@ class ExtensionActivity : AppCompatActivity() {
 
         // 게시글이 본인 이메일과 같으면 수정, 삭제 메뉴가 보임.
         val user = PreferenceManger(this).getString("userEmail")
-        val boardOwner = PreferenceManger(this).getString("BoardUserEmail") //intent.getStringExtra("userEmail")
+        val boardOwner = PreferenceManger(this).getString("BoardUserEmail")
 
         val item1 = menu?.findItem(R.id.item_edit)
         val item2 = menu?.findItem(R.id.item_delete)
@@ -183,9 +146,9 @@ class ExtensionActivity : AppCompatActivity() {
             }
             R.id.item_edit -> {
 
-                val id = freeBoardId//PreferenceManger(this).getInt("BoardId")//intent.getIntExtra("id", 0)
-                val title = PreferenceManger(this).getString("BoardTitle")//intent.getStringExtra("title")
-                val content = PreferenceManger(this).getString("BoardContent")//intent.getStringExtra("content")
+                val id = freeBoardId
+                val title = PreferenceManger(this).getString("BoardTitle")
+                val content = PreferenceManger(this).getString("BoardContent")
 
                 val intent = Intent(this, PostCreateActivity::class.java)
                 intent.putExtra("id", id)
@@ -197,7 +160,6 @@ class ExtensionActivity : AppCompatActivity() {
             }
             R.id.item_delete -> {
 
-                //val freeBoardId = PreferenceManger(this).getInt("BoardId")//intent.getIntExtra("id", 0)//PreferenceManger(this).getString("")
                 val dialog = AlertDialog.Builder(binding.root.context)
                 dialog.setTitle("게시글을 삭제하시겠습니까?")
                 dialog.setIcon(R.drawable.ic_round_delete)
@@ -244,7 +206,6 @@ class ExtensionActivity : AppCompatActivity() {
     fun loadCommentsComplete(data: MutableList<DataCollection.GetCommentsData>) {
         commentsAdapter.commentsListData = data
         commentsAdapter.notifyDataSetChanged()
-        //Log.d("데이타확인", data.toString())
     }
 
     // 받아온 data 를 layout 에 setting 시켜줌.
@@ -311,14 +272,11 @@ class ExtensionActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null)
                 {
                     if(response.body()!!.code == 200){
-                        //Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         // 여기서 데이터를 받아와 mutableList 로 넘겨준다.
                         loadFreeBoardComplete(response.body()!!.data)
-                        //Loading(bindingLoading).unableLoading() // 데이터 받아오고 ProgressBar 해제
 
                     }else{
                         Toast.makeText(this@ExtensionActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        //Loading(bindingLoading).unableLoading() // 데이터 받아오기 실패해도 ProgressBar 해제
                     }
                 }
             }
@@ -340,10 +298,9 @@ class ExtensionActivity : AppCompatActivity() {
 
     inner class ListListener: DialogInterface.OnClickListener {
         override fun onClick(dialog: DialogInterface?, which: Int) {
-            //Log.d("선택", "${which+1} 번째 선택")
-            Log.d("무엇?", reportData[which])
 
             DataCommunication.sendReportData(this@ExtensionActivity, reportData[which], freeBoardId)
+
         }
 
     }

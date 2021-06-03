@@ -1,8 +1,5 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
-import java.sql.Timestamp
-import java.util.*
-
 data class PostData(
     val freeboard_title: String,
     val freeboard_content: String,

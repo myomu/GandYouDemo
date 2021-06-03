@@ -7,8 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gatheringandyou.gandyoudemo.MainActivity
-import com.gatheringandyou.gandyoudemo.R
-import com.gatheringandyou.gandyoudemo.bulletinboards.FreeBoard
 import com.gatheringandyou.gandyoudemo.databinding.ActivityLoginBinding
 import com.gatheringandyou.gandyoudemo.shared.PreferenceManger
 import com.gatheringandyou.gandyoudemo.signup.SignupActivity
@@ -33,31 +31,27 @@ class loginActivity : AppCompatActivity() {
 
         val checkLoginEmail = PreferenceManger(context).getString("userEmail")
 
-        Log.d("체크 Pref", checkLoginEmail.toString())
-
         if (checkLoginEmail != "Default") {
 
             goToMain()
 
-        } else {
-            return
-        }
+        } else { return }
 
     }
 
     private fun dologin() {
-        var email = binding.etEmail.text.toString().trim()
-        var password = binding.etPass.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPass.text.toString().trim()
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "빈 칸을 입력해 주세요", Toast.LENGTH_SHORT).show()
             return
         }
-        var logindata = Login(email,password)
+        val logindata = Login(email,password)
         val retrofit = repository.getApiClient()
         if (retrofit != null) {
             loginapi = retrofit.create(Logininterface::class.java)
         }
-        var call: Call<loginResponse> = loginapi.getLogin(logindata)
+        val call: Call<loginResponse> = loginapi.getLogin(logindata)
         call.enqueue(object: Callback<loginResponse> {
             override fun onResponse(call: Call<loginResponse>, response: Response<loginResponse>) {
                 if (response.isSuccessful && response.body() != null)
@@ -89,13 +83,13 @@ class loginActivity : AppCompatActivity() {
 
     private fun goResister() {
 
-        var intent = Intent(this, SignupActivity::class.java)
+        val intent = Intent(this, SignupActivity::class.java)
         startActivity(intent)
 
     }
 
     private fun goToMain() {
-        var intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

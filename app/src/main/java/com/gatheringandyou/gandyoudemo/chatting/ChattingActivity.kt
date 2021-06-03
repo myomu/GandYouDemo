@@ -22,7 +22,6 @@ class ChattingActivity : AppCompatActivity() {
 
     private lateinit var currentUserNickname: String            // 현재 닉네임
     private val db = FirebaseFirestore.getInstance()    // Firestore 인스턴스
-    private lateinit var registration: ListenerRegistration    // 문서 수신
     private val chattingList = arrayListOf<ChattingLayoutData>()    // 리사이클러 뷰 목록
     private lateinit var chattingAdapter: ChattingAdapter   // 리사이클러 뷰 어댑터
 
@@ -106,7 +105,7 @@ class ChattingActivity : AppCompatActivity() {
 
     }
 
-
+    // 채팅 프래그먼트의 메인 화면. 리사이클러뷰로 채팅방 대화들을 표시해준다.
     private fun getContentsData(DocumentId: String?) {
 
         db.collection("Chatting/" + DocumentId + "/chat")
@@ -120,9 +119,6 @@ class ChattingActivity : AppCompatActivity() {
 
                 chattingList.clear()
                 chattingList.add(ChattingLayoutData("알림", "$currentUserNickname 닉네임으로 입장했습니다.", "", ""))
-                // 원하지 않는 문서 무시
-                // if (snapshots!!.metadata.isFromCache) return@addSnapshotListener - 이것 제거해야 프래그먼트로 이동하면 바로 뜸.
-
 
                 // 문서 수신 - 변경사항 없이 그냥 바로 문서를 불러옴. 실시간이기에 내용 수정되면 바로 표시됨!!
                 for (doc in snapshots!!.documents) {
@@ -131,20 +127,15 @@ class ChattingActivity : AppCompatActivity() {
                     val contents = doc.data?.get("contents").toString()
                     val timestamp = doc.data?.get("time") as Timestamp
                     val email = doc. data?.get("email").toString()
-                    //val documentId = doc.id
-
 
                     // 타임스탬프를 한국 시간, 문자열로 바꿈
                     val sf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.KOREA)
                     sf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
                     val time = sf.format(timestamp.toDate())
-
                     val data = ChattingLayoutData(nickname, contents, time, email)
 
                     chattingList.add(data)
-
                 }
-
                 chattingAdapter.chattingListData = chattingList
                 chattingAdapter.notifyDataSetChanged()
                 binding.rvChattingList.scrollToPosition(chattingList.size - 1)
@@ -154,14 +145,14 @@ class ChattingActivity : AppCompatActivity() {
 
 
     private fun contentsDataSend(DocumentId: String?, currentUserEmail:String) {
-        // 입력 데이터
+
         val data = hashMapOf(
             "nickname" to currentUserNickname,
             "contents" to binding.etChatting.text.toString(),
             "time" to Timestamp.now(),
             "email" to currentUserEmail
         )
-        // Firestore에 기록. 이때 입장하는 방의 문서Id를 받아와 chat Collection으로 이동하고 그곳에 채팅 데이터를 추가함.
+
         db.collection("Chatting/" + DocumentId + "/chat").add(data)
             .addOnSuccessListener {
                 binding.etChatting.text.clear()
@@ -173,7 +164,6 @@ class ChattingActivity : AppCompatActivity() {
             }
 
 
-        // 입력된 데이터를 문서에 있는 최근 시간, 최근 메세지 내용을 update 시켜준다.
         db.collection("Chatting").document(DocumentId!!)
             .update(
                 mapOf(
@@ -191,3 +181,7 @@ class ChattingActivity : AppCompatActivity() {
 
     }
 }
+
+// 입력 데이터
+// Firestore에 기록. 이때 입장하는 방의 문서Id를 받아와 chat Collection으로 이동하고 그곳에 채팅 데이터를 추가함.
+// 입력된 데이터를 문서에 있는 최근 시간, 최근 메세지 내용을 update 시켜준다.

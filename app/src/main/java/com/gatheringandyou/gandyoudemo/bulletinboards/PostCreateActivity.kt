@@ -121,11 +121,7 @@ class PostCreateActivity : AppCompatActivity() {
         val username = PreferenceManger(this).getString("userNickname").toString()
         val useremail = PreferenceManger(this).getString("userEmail").toString()
         val nowTime = Calendar.getInstance().time // 현재 시간
-
         val changeTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(nowTime)
-
-        Log.d("보내기 전 현재 시간", nowTime.toString())
-        Log.d("변환된 현재 시간", changeTime.toString())
 
         if (title.isEmpty() || content.isEmpty()) {
             Toast.makeText(this, "제목과 내용을 입력해 주세요", Toast.LENGTH_SHORT).show()
@@ -143,12 +139,7 @@ class PostCreateActivity : AppCompatActivity() {
                 {
                     if(response.body()!!.code == 200){
                         Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        //val cc = FreeBoard()
-                        //cc.onResume
-                        //FreeBoard().onResume()
                         someFunction()
-
-
                     }else{
                         Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     }
@@ -185,13 +176,6 @@ class PostCreateActivity : AppCompatActivity() {
                         Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
                         someFunction()
-                        //val intent = Intent(this@PostCreateActivity, ExtensionActivity::class.java)
-                        //intent.putExtra("title", title)
-                        //intent.putExtra("content", content)
-                        //intent.putExtra("userName", username)
-                        //intent.putExtra("id", freeBoardId)
-                        //startActivity(intent)
-                        //finish()
 
                     }else{
                         Toast.makeText(this@PostCreateActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()

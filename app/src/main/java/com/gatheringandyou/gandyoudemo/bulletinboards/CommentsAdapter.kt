@@ -36,9 +36,7 @@ class CommentsAdapter(context: Context): RecyclerView.Adapter<CommentsHolder>() 
     override fun onBindViewHolder(holder: CommentsHolder, position: Int) {
         val comments = commentsListData[position]
 
-        // loadCommentsComplete 함수에서 넘겨받은 data 를 CommentsHolder 클래스의 함수 setCommentsData 에 넘겨준다.
         holder.setCommentsData(comments)
-        //holder.deleteComments(comments)
         holder.checkDelete(comments)
 
     }
@@ -66,9 +64,6 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
         } else {
             binding.btnCommentsDelete.visibility = View.VISIBLE
         }
-
-        // 댓글 삭제 처리
-        // binding.btnCommentsDelete
 
         val dataTime = data.comments_date //mysql에서 받아오는 시간과 날짜 데이터
 
@@ -109,7 +104,6 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
                     when (which) {
                         DialogInterface.BUTTON_POSITIVE -> {
                             deleteComments(data)
-                            //DataCommunication.popupLoading() // 댓글 삭제후 로딩.
                         }
                     }
                 }
@@ -124,13 +118,7 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
 
     fun deleteComments(data: DataCollection.GetCommentsData) {
 
-        //binding.btnCommentsDelete.setOnClickListener {
-
-            Log.d("클릭 확인", "~~")
-
             val id = DataCollection.DeleteCommentsData(data.id_comments)
-            //val context = ExtensionActivity()
-
             val retrofit = repository.getApiClient()
             if (retrofit != null) {
                 dataApi = retrofit.create(InterfaceCollection::class.java)
@@ -139,17 +127,12 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
             val call: Call<DataCollection.DeleteCommentsResponse> = dataApi.deleteCommentsData(id)
             call.enqueue(object: Callback<DataCollection.DeleteCommentsResponse> {
 
-                override fun onResponse(call: Call<DataCollection.DeleteCommentsResponse>, response: Response<DataCollection.DeleteCommentsResponse>) {
+                override fun onResponse(call: Call<DataCollection.DeleteCommentsResponse>,
+                                        response: Response<DataCollection.DeleteCommentsResponse>) {
                     if (response.isSuccessful && response.body() != null)
                     {
                         if(response.body()!!.code == 200){
                             Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                            Log.d("성공 메세지", response.body()!!.message)
-
-                            //val activity = ExtensionActivity()
-                            //val intent = Intent(binding.root.context, ExtensionActivity::class.java)
-                            //context.startActivity(intent)
-
                         }else{
                             Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         }
@@ -161,6 +144,15 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
                 }
             })
 
+            // 댓글 삭제 후 다시 ExtensionActivity 새로고침 하도록.
+            (binding.root.context as ExtensionActivity).finish()
+            val intent = Intent(binding.root.context, ExtensionActivity::class.java)
+            (binding.root.context as ExtensionActivity).startActivity(intent)
+            (binding.root.context as ExtensionActivity).overridePendingTransition(R.anim.none, R.anim.none)
+
+    }
+
+/*
             val boardId = PreferenceManger(binding.root.context).getInt("BoardId")
             val boardTitle = PreferenceManger(binding.root.context).getString("BoardTitle")
             val boardContent = PreferenceManger(binding.root.context).getString("BoardContent")
@@ -168,27 +160,9 @@ class CommentsHolder(val binding: ItemCommentsBinding, val context: Context): Re
             val boardLikeCount = PreferenceManger(binding.root.context).getInt("BoardLikeCount")
             val boardCommentsCount = PreferenceManger(binding.root.context).getInt("BoardCommentsCount")
             val boardUserName = PreferenceManger(binding.root.context).getString("BoardUserName")
-
-            // 댓글 삭제 후 다시 ExtensionActivity 새로고침 하도록.
-            (binding.root.context as ExtensionActivity).finish()
-            val intent = Intent(binding.root.context, ExtensionActivity::class.java)
-
             intent.putExtra("id", boardId)
             intent.putExtra("title", boardTitle)
             intent.putExtra("content", boardContent)
-            //시간만 약간 차이나게
-            //intent.putExtra("date", boardDate)
-
-            //intent.putExtra("likeCount", boardLikeCount)
-            //intent.putExtra("commentsCount", boardCommentsCount)
-            //intent.putExtra("userName", boardUserName)
-
-            (binding.root.context as ExtensionActivity).startActivity(intent)
-            (binding.root.context as ExtensionActivity).overridePendingTransition(R.anim.none, R.anim.none)
-
-        //}
-    }
-
-
+            */
 
 }

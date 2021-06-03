@@ -14,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/** 로그인 후 보여지는 메인 화면 하단 네비게이션바로 4개의 프래그먼트들로 구성되어져 있음. **/
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
 
@@ -28,22 +29,19 @@ class MainActivity : AppCompatActivity() {
 
         // 네비게이션들을 담는 호스트
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host) as NavHostFragment
-
         // 네비게이션 컨트롤러
         val navController = navHostFragment.navController
-
         // 바텀 네비게이션 뷰 와 네비게이션 묶어준다
         NavigationUI.setupWithNavController(mBinding.myBottomNav, navController)
 
         loadUserData(this)
-
 
         val checkEmail = PreferenceManger(this).getString("userEmail")
         Log.d("이메일저장 확인 메인에서", checkEmail.toString())
 
     }
 
-
+    // 먼저 로그인 후 MainActivity 화면에 들어오면 사용자의 정보를 PreferenceManger 를 이용해 저장시킨다.
     private fun loadUserData(context: Context){
 
         val useremail = PreferenceManger(context).getString("userEmail")
@@ -67,16 +65,9 @@ class MainActivity : AppCompatActivity() {
                     if(response.body()!!.code == 200){
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                         Log.d("성공 메세지", response.body()!!.message)
-                        Log.d("사용자 데이터 받아와지나?", response.body()!!.data.toString())
 
                         //Preference 에 사용자 데이터 저장
                         listData = response.body()!!.data
-
-
-                        Log.d("리스트데이터 닉네임", listData[0].nickname)
-                        Log.d("리스트데이터 gender", listData[0].gender)
-                        Log.d("리스트데이터 학과", listData[0].department)
-                        Log.d("리스트데이터 나이", listData[0].age.toString())
 
                         PreferenceManger(context).setInt("userId", listData[0].user_id)
                         PreferenceManger(context).setString("userNickname", listData[0].nickname)
@@ -84,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                         PreferenceManger(context).setString("userDepartment", listData[0].department)
                         PreferenceManger(context).setInt("userAge", listData[0].age)
                         PreferenceManger(context).setString("userHobby1", listData[0].hobby1)
-                       PreferenceManger(context).setString("userHobby2", listData[0].hobby2)
+                        PreferenceManger(context).setString("userHobby2", listData[0].hobby2)
                         PreferenceManger(context).setString("userHobby3", listData[0].hobby3)
 
                     }else{
@@ -92,7 +83,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
             override fun onFailure(call: Call<UserDataResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
             }

@@ -1,36 +1,25 @@
 package com.gatheringandyou.gandyoudemo.profile
 
-import android.content.Context
-import android.icu.number.IntegerWidth
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.gatheringandyou.gandyoudemo.MainActivity
 import com.gatheringandyou.gandyoudemo.R
 import com.gatheringandyou.gandyoudemo.bulletinboards.DataCommunication.postProfileData
 import com.gatheringandyou.gandyoudemo.databinding.ActivityProfileEditBinding
-import com.gatheringandyou.gandyoudemo.fragments.ProfileFragment
 import com.gatheringandyou.gandyoudemo.shared.PreferenceManger
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileEditActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityProfileEditBinding.inflate(layoutInflater) }
-
     private val db = FirebaseFirestore.getInstance()    // Firestore 인스턴스
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
 
         val nick = PreferenceManger(applicationContext).getString("userNickname")
         val age = PreferenceManger(applicationContext).getInt("userAge").toString()
@@ -38,7 +27,6 @@ class ProfileEditActivity : AppCompatActivity() {
         binding.etProfileEditNickname.setText(nick)
         binding.etProfileEditAge.setText(age)
         binding.etProfileEditDepartment.setText(depart)
-
 
         var selectHobby1 = "1"
         var selectHobby2 = "2"
@@ -96,9 +84,6 @@ class ProfileEditActivity : AppCompatActivity() {
 
         }
 
-
-        //binding.spinnerHobby1.setSelection(0)
-
         binding.spinnerHobby1.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 //코드 작성 부분
@@ -136,8 +121,6 @@ class ProfileEditActivity : AppCompatActivity() {
             }
         }
 
-
-
         //취소(X) 버튼 이벤트 처리
         binding.btnProfileEditCancel.setOnClickListener(BtnCloseListener())
 
@@ -146,14 +129,11 @@ class ProfileEditActivity : AppCompatActivity() {
 
             val currentEmail = PreferenceManger(applicationContext).getString("userEmail") // 현재 저장된 이메일
             val currentNick = PreferenceManger(applicationContext).getString("userNickname") // 현재 저장된 닉네임
-
             val nickname = binding.etProfileEditNickname.text.toString() // etText 의 수정할 닉네임
             val age: Int = Integer.parseInt(binding.etProfileEditAge.text.toString())
             val department = binding.etProfileEditDepartment.text.toString()
 
-
             updateFirestoreNickname(currentEmail, currentNick, nickname)
-
 
             PreferenceManger(applicationContext).setString("userNickname", nickname)
             PreferenceManger(applicationContext).setInt("userAge", age)
@@ -164,23 +144,7 @@ class ProfileEditActivity : AppCompatActivity() {
 
             postProfileData(this, nickname, department, age, selectHobby1, selectHobby2, selectHobby3)
 
-
-            val frag = ProfileFragment()
-            //val fragM = FragmentManager().beginTransaction()
-            //refreshFragment(frag, supportFragmentManager.getFragment(ProfileFragment))
-            frag.refreshFragment()
-
-            //val mainActivity = (activity as MainActivity)
-
-            //MainActivity().supportFragmentManager.beginTransaction().detach(ProfileFragment()).attach(ProfileFragment()).commit()
-
-//            val fr = supportFragmentManager.findFragmentById(R.id.freeBoard_view)
-//            supportFragmentManager.beginTransaction().detach(ProfileFragment())
-//            supportFragmentManager.beginTransaction().attach(ProfileFragment())
-//            supportFragmentManager.beginTransaction().commit()
-
             onBackPressed()
-
         }
 
     }
@@ -190,6 +154,7 @@ class ProfileEditActivity : AppCompatActivity() {
         if (isFinishing) {
             // back 버튼으로 화면 종료가 야기되면 동작한다.
             overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+            finish()
         }
     }
 
@@ -200,13 +165,7 @@ class ProfileEditActivity : AppCompatActivity() {
         }
     }
 
-    private fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
-        val ft: FragmentTransaction = fragmentManager.beginTransaction()
-        ft.detach(fragment).attach(fragment).commit()
-    }
-
     private fun updateFirestoreNickname(currentUserEmail: String?, currentUserNickname: String?, editUserNickname: String) {
-
         // 먼저 users 가 지니는 email key 로 접근. email 은 배열이다.
         db.collection("Chatting")
             .whereArrayContains("users.email", currentUserEmail!!) //여기 currentUser 로 쿼리 selection을 한다. 해당 유저의 이메일이 있는 대화창 전부 찾음.
@@ -216,20 +175,22 @@ class ProfileEditActivity : AppCompatActivity() {
                     Log.w("ChatFragment", "Listen failed: $e")
                     return@addSnapshotListener
                 }
-
                 for (doc in snapshots!!.documents) {
 
                     //val userNicknameArray = doc.data?.get("users") - 필요없음.. 아래에서 바로 닉네임 바꿈.
                     val documentId = doc.id
+                    val nickname_1 = doc.data?.get("nickname_1").toString()
+                    val nickname_2 = doc.data?.get("nickname_2").toString()
 
-                    //Log.d("userNicknameArray 테스트", userNicknameArray.toString())
-                    Log.d("DocumentId 테스트", doc.id) // 문서 아이디 받아오는 것
+                    if (nickname_1 == currentUserNickname) {
+                        db.collection("Chatting").document(documentId)
+                            .update("nickname_1", editUserNickname)
+                    } else { continue }
 
-                    // 수정할 유저의 닉네임을 추가한다.
-                    db.collection("Chatting").document(documentId).update("users.nickname", FieldValue.arrayUnion(editUserNickname))
-                    // 현재 유저의 닉네임을 삭제한다.
-                    db.collection("Chatting").document(documentId).update("users.nickname", FieldValue.arrayRemove(currentUserNickname))
-
+                    if (nickname_2 == currentUserNickname) {
+                        db.collection("Chatting").document(documentId)
+                            .update("nickname_2", editUserNickname)
+                    } else { continue }
                 }
             }
     }

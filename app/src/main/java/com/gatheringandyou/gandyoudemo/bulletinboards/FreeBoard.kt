@@ -91,10 +91,8 @@ class FreeBoard : AppCompatActivity() {
 
     // 리사이클러뷰 어댑터에 데이터 setting 시켜주는 함수.
     fun loadComplete(data: MutableList<FreeBoardData>) {
-        //boardAdapter.setList(data)
         boardAdapter.listData = data
         boardAdapter.notifyDataSetChanged()
-        Log.d("데이타확인", data.toString())
     }
 
     private fun showLoadingDialog() {
