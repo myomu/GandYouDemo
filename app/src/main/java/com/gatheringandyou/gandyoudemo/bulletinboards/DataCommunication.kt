@@ -1,14 +1,8 @@
 package com.gatheringandyou.gandyoudemo.bulletinboards
 
-import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import android.view.View
-import android.widget.RelativeLayout
 import android.widget.Toast
-import com.gatheringandyou.gandyoudemo.R
-import com.gatheringandyou.gandyoudemo.databinding.ActivityFreeBoardBinding
-import com.gatheringandyou.gandyoudemo.databinding.LoadingBinding
 import com.gatheringandyou.gandyoudemo.login.repository
 import com.gatheringandyou.gandyoudemo.profile.EditProfileResponse
 import com.gatheringandyou.gandyoudemo.profile.ProfileEditActivity
@@ -170,8 +164,6 @@ object DataCommunication {
                     if(response.body()!!.code == 200){
 
                         mCallback.finish()
-                        val intent = Intent(mCallback, FreeBoard::class.java)
-                        mCallback.startActivity(intent)
 
                     }else{
                         Toast.makeText(mCallback, response.body()!!.message, Toast.LENGTH_SHORT).show()

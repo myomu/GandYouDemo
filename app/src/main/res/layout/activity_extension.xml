@@ -59,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#FFFFFF"
                     android:src="@drawable/ic_recommend"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +68,6 @@
                     android:id="@+id/tv_extension_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="유저이름"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,7 +75,6 @@
                     android:id="@+id/tv_extension_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="시간"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_extension_username" />
@@ -90,7 +89,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:padding="10dp"
-                android:text="제목"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="15dp"
@@ -104,7 +102,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:padding="10dp"
-                android:text="내용"
                 tools:layout_editor_absoluteX="15dp"
                 tools:layout_editor_absoluteY="71dp" />
 
@@ -126,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="공감 개수"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -135,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="댓글 개수"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -144,6 +142,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

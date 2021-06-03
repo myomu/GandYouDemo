@@ -29,6 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class ExtensionActivity : AppCompatActivity() {
@@ -79,14 +80,6 @@ class ExtensionActivity : AppCompatActivity() {
 
         // 댓글 데이터 불러오는 함수
         DataCommunication.loadCommentsData(this, freeBoardId)
-
-        // 테스트중..
-        binding.tvExtensionCommentsCount.text = commentsAdapter.itemCount.toString()
-
-        Log.d("리스트 사이즈 확인", commentsAdapter.itemCount.toString())
-        // 테스트중..
-
-        //binding.btnExtensionLike
 
         // 채팅창이 공백일 경우 버튼 비활성화
         binding.etBoardChatting.addTextChangedListener { text ->
@@ -206,7 +199,10 @@ class ExtensionActivity : AppCompatActivity() {
     fun loadCommentsComplete(data: MutableList<DataCollection.GetCommentsData>) {
         commentsAdapter.commentsListData = data
         commentsAdapter.notifyDataSetChanged()
+        val commentsCount = data.size
+        binding.tvExtensionCommentsCount.text = commentsCount.toString()
     }
+
 
     // 받아온 data 를 layout 에 setting 시켜줌.
     fun loadFreeBoardComplete(data: MutableList<FreeBoardData>) {
